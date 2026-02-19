@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>WARLOCKHOP — Album</title>
+  <meta name="theme-color" content="#070810" />
+  <style>
+    :root { color-scheme: dark; }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0; min-height:100vh;
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      background:
+        radial-gradient(1200px 520px at 20% 10%, rgba(140,80,255,.14), transparent 60%),
+        radial-gradient(1100px 520px at 80% 90%, rgba(0,220,255,.10), transparent 55%),
+        #05060a;
+      color: rgba(255,255,255,.92);
+    }
+    header{
+      padding: 22px 18px 10px;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+    .kicker{
+      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+      opacity:.86; font-size:.92rem; letter-spacing:.08em; text-transform:uppercase;
+    }
+    .dot{ width:6px; height:6px; border-radius:999px; background:rgba(255,255,255,.5); }
+    h1{
+      margin:10px 0 6px;
+      font-size: clamp(26px, 4vw, 44px);
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+    .sub{
+      opacity:.75; line-height:1.4;
+      max-width: 70ch;
+    }
+    .wrap{
+      max-width:1080px;
+      margin: 0 auto;
+      padding: 14px 18px 34px;
+      display:grid;
+      gap:14px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap:14px;
+    }
+    .card{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.03);
+      border-radius: 22px;
+      overflow:hidden;
+      box-shadow: 0 10px 40px rgba(0,0,0,.45);
+      display:flex;
+      flex-direction:column;
+      min-height: 420px;
+    }
+    .cover{
+      position:relative;
+      aspect-ratio: 4 / 5;
+      background: rgba(255,255,255,.02);
+      border-bottom:1px solid rgba(255,255,255,.10);
+      overflow:hidden;
+    }
+    .cover img{
+      width:100%; height:100%;
+      object-fit:cover;
+      display:block;
+      filter: contrast(1.05) saturate(1.06);
+      transform: scale(1.02);
+    }
+    .badge{
+      position:absolute;
+      top:12px; left:12px;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.28);
+      font-size:.80rem;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      backdrop-filter: blur(8px);
+    }
+    .content{
+      padding: 14px 14px 14px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      flex:1;
+    }
+    .title{
+      font-weight:900;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      font-size: 1.02rem;
+      margin:0;
+    }
+    .meta{
+      opacity:.75;
+      font-size:.92rem;
+      margin-top:-6px;
+      line-height:1.3;
+    }
+    .hook{
+      opacity:.86;
+      font-size:.95rem;
+      line-height:1.35;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.22);
+      border-radius: 16px;
+      padding: 10px 12px;
+      flex:1;
+    }
+    .hook b{ letter-spacing:.06em; text-transform:uppercase; opacity:.9; }
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    a.btn, button.btn{
+      appearance:none;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      color: rgba(255,255,255,.92);
+      padding: 10px 12px;
+      border-radius: 14px;
+      text-decoration:none;
+      font-weight:700;
+      letter-spacing:.04em;
+      cursor:pointer;
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+    }
+    a.btn:hover, button.btn:hover{
+      background: rgba(255,255,255,.08);
+      border-color: rgba(255,255,255,.22);
+      transform: translateY(-1px);
+    }
+    a.btn:active, button.btn:active{ transform: translateY(0); }
+    .btn.primary{
+      background: rgba(140,80,255,.14);
+      border-color: rgba(140,80,255,.30);
+    }
+    .btn.primary:hover{
+      background: rgba(140,80,255,.20);
+      border-color: rgba(140,80,255,.44);
+    }
+    .btn[aria-disabled="true"]{
+      opacity:.5;
+      cursor:not-allowed;
+      pointer-events:none;
+    }
+    .player{
+      width:100%;
+      border-radius: 14px;
+      outline:none;
+      margin-top: 2px;
+    }
+    footer{
+      max-width:1080px;
+      margin: 0 auto;
+      padding: 0 18px 26px;
+      opacity:.70;
+      font-size:.92rem;
+      line-height:1.45;
+    }
+    code{ background:rgba(255,255,255,.06); padding:2px 6px; border-radius:8px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="kicker"><span class="dot"></span> warlockhop album <span class="dot"></span> wobblebass protection anthems</div>
+    <h1>Binding Tongue / Open Hand</h1>
+    <div class="sub">
+      Play from here, or open each track’s visualizer for the full vibe.
+      (Index supports inline playback; visualizers use the animated canvas pages.)
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="grid">
+
+      <!-- TRACK 1 -->
+      <article class="card" data-track="1">
+        <div class="cover">
+          <img src="1.png" alt="NO CLAIM cover art" />
+          <div class="badge">Track 01</div>
+        </div>
+        <div class="content">
+          <h2 class="title">NO CLAIM</h2>
+          <div class="meta">WarlockHop • 140 BPM • Halftime Wobblebass</div>
+
+          <div class="hook"><b>Hook</b><br/>
+            By my name, by my breath — no claim.<br/>
+            No word, no hand — no chain.
+          </div>
+
+          <audio class="player" controls preload="metadata">
+            <source src="no-claim.mp3" type="audio/mpeg" />
+          </audio>
+
+          <div class="actions">
+            <a class="btn primary" href="1.html">Open Visualizer</a>
+            <a class="btn" href="no-claim.mp3" download>Download Audio</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- TRACK 2 (placeholder until you add files) -->
+      <article class="card" data-track="2">
+        <div class="cover">
+          <img src="track2.png" alt="MIRROR WORK cover art (add track2.png)" onerror="this.style.display='none'; this.parentElement.style.display='grid'; this.parentElement.style.placeItems='center'; this.parentElement.style.background='rgba(255,255,255,.03)'; this.parentElement.innerHTML='<div class=\'badge\'>Track 02</div><div style=\'opacity:.75;padding:16px;text-align:center\'>Add <code>track2.png</code> for cover</div>';" />
+          <div class="badge">Track 02</div>
+        </div>
+        <div class="content">
+          <h2 class="title">MIRROR WORK</h2>
+          <div class="meta">WarlockHop • 140 BPM • Mirror Bind</div>
+
+          <div class="hook"><b>Hook</b><br/>
+            As you cast, so you carry.<br/>
+            As you reach, so you feel.
+          </div>
+
+          <div class="actions">
+            <a class="btn primary" aria-disabled="true" href="#">Visualizer (add mirror-work.html)</a>
+            <a class="btn" aria-disabled="true" href="#">Audio (add mirror-work.mp3)</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- TRACK 3 (placeholder until you add files) -->
+      <article class="card" data-track="3">
+        <div class="cover">
+          <img src="track3.png" alt="NO LATCH cover art (add track3.png)" onerror="this.style.display='none'; this.parentElement.style.display='grid'; this.parentElement.style.placeItems='center'; this.parentElement.style.background='rgba(255,255,255,.03)'; this.parentElement.innerHTML='<div class=\'badge\'>Track 03</div><div style=\'opacity:.75;padding:16px;text-align:center\'>Add <code>track3.png</code> for cover</div>';" />
+          <div class="badge">Track 03</div>
+        </div>
+        <div class="content">
+          <h2 class="title">NO LATCH</h2>
+          <div class="meta">WarlockHop • 140 BPM • Knot of Silence</div>
+
+          <div class="hook"><b>Hook loop</b><br/>
+            No latch. / No gate.
+          </div>
+
+          <div class="actions">
+            <a class="btn primary" aria-disabled="true" href="#">Visualizer (add no-latch.html)</a>
+            <a class="btn" aria-disabled="true" href="#">Audio (add no-latch.mp3)</a>
+          </div>
+        </div>
+      </article>
+
+    </section>
+  </main>
+
+  <footer>
+    <div><b>Expected layout (same folder):</b></div>
+    <div>
+      <code>index.html</code>, <code>1.html</code>, <code>1.png</code>, <code>no-claim.mp3</code><br/>
+      Later: <code>mirror-work.html</code>, <code>mirror-work.mp3</code>, <code>track2.png</code><br/>
+      Later: <code>no-latch.html</code>, <code>no-latch.mp3</code>, <code>track3.png</code>
+    </div>
+  </footer>
+</body>
+</html>
