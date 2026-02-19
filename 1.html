@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NO CLAIM — WarlockHop Visualizer</title>
+  <style>
+    :root { color-scheme: dark; }
+    body { margin:0; min-height:100vh; display:grid; place-items:center; background:#05060a; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; }
+    .card{ width:min(860px,92vw); border:1px solid rgba(255,255,255,.12); border-radius:20px; padding:18px; background:rgba(255,255,255,.03); box-shadow:0 10px 40px rgba(0,0,0,.45); }
+    .top{ display:flex; gap:14px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
+    .title{ font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+    .sub{ opacity:.72; font-size:.92rem; }
+    canvas{ width:100%; height:300px; display:block; border-radius:16px; background: radial-gradient(1200px 500px at 30% 30%, rgba(140,80,255,.12), transparent 60%),
+                                           radial-gradient(900px 420px at 70% 60%, rgba(0,220,255,.10), transparent 55%); border:1px solid rgba(255,255,255,.10); }
+    audio{ width:100%; margin-top:12px; }
+    .hook{ margin-top:12px; padding:12px 14px; border-radius:16px; border:1px solid rgba(255,255,255,.10); background:rgba(0,0,0,.25); line-height:1.35; }
+    .hook b{ letter-spacing:.06em; text-transform:uppercase; }
+    .pill{ padding:6px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.04); font-size:.82rem; opacity:.8; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="top">
+      <div>
+        <div class="title">NO CLAIM</div>
+        <div class="sub">WarlockHop • 140 BPM • Halftime Wobblebass</div>
+      </div>
+      <div class="pill" id="status">Visualizer: idle</div>
+    </div>
+
+    <canvas id="viz" width="1200" height="300"></canvas>
+
+    <audio id="audio" controls preload="metadata">
+      <!-- Replace with your file -->
+      <source src="no-claim.mp3" type="audio/mpeg" />
+    </audio>
+
+    <div class="hook">
+      <b>Hook:</b><br/>
+      By my name, by my breath — no claim.<br/>
+      No word, no hand — no chain.<br/>
+      What you send comes back uncarried.<br/>
+      I don’t hold it. I don’t wear it.
+    </div>
+  </div>
+
+  <script>
+    const audio = document.getElementById('audio');
+    const canvas = document.getElementById('viz');
+    const ctx = canvas.getContext('2d');
+    const statusEl = document.getElementById('status');
+
+    let ac, analyser, data, raf;
+
+    function resize() {
+      const dpr = Math.max(1, window.devicePixelRatio || 1);
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = Math.floor(rect.width * dpr);
+      canvas.height = Math.floor(rect.height * dpr);
+    }
+    window.addEventListener('resize', resize); resize();
+
+    function initAudio() {
+      if (ac) return;
+      ac = new (window.AudioContext || window.webkitAudioContext)();
+      const src = ac.createMediaElementSource(audio);
+      analyser = ac.createAnalyser();
+      analyser.fftSize = 2048;
+      data = new Uint8Array(analyser.frequencyBinCount);
+      src.connect(analyser);
+      analyser.connect(ac.destination);
+    }
+
+    function draw() {
+      analyser.getByteFrequencyData(data);
+      const w = canvas.width, h = canvas.height;
+
+      ctx.clearRect(0,0,w,h);
+
+      // glow fog
+      ctx.globalAlpha = 0.9;
+      ctx.fillStyle = 'rgba(0,0,0,0.20)';
+      ctx.fillRect(0,0,w,h);
+
+      // waveform-ish bars
+      const bars = 96;
+      const step = Math.floor(data.length / bars);
+      const barW = w / bars;
+
+      // compute low-end energy for "wobble"
+      let low = 0;
+      for (let i=0;i<step*8;i++) low += data[i];
+      low /= (step*8);
+      const wob = low / 255;
+
+      // center line
+      ctx.globalAlpha = 0.6;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.beginPath();
+      ctx.moveTo(0, h*0.65);
+      ctx.lineTo(w, h*0.65);
+      ctx.stroke();
+
+      ctx.globalAlpha = 0.95;
+      for (let i=0;i<bars;i++) {
+        const v = data[i*step] / 255;
+        const bh = (v*v) * (h*0.72);
+        const x = i * barW;
+        const y = h*0.90 - bh;
+
+        // subtle "chain" wobble offset
+        const off = Math.sin((i*0.25) + performance.now()*0.004) * (10 * wob);
+        ctx.fillStyle = `rgba(255,255,255,${0.08 + v*0.35})`;
+        ctx.fillRect(x+barW*0.18, y+off, barW*0.64, bh);
+      }
+
+      // status
+      statusEl.textContent = `Visualizer: ${audio.paused ? 'paused' : 'playing'} • wobble ${(wob*100).toFixed(0)}%`;
+      raf = requestAnimationFrame(draw);
+    }
+
+    audio.addEventListener('play', async () => {
+      initAudio();
+      if (ac.state === 'suspended') await ac.resume();
+      cancelAnimationFrame(raf);
+      draw();
+    });
+    audio.addEventListener('pause', () => {
+      statusEl.textContent = 'Visualizer: paused';
+      cancelAnimationFrame(raf);
+    });
+    audio.addEventListener('ended', () => {
+      statusEl.textContent = 'Visualizer: ended';
+      cancelAnimationFrame(raf);
+    });
+  </script>
+</body>
+</html>
